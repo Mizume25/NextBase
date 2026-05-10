@@ -1,0 +1,50 @@
+Create the following reusable React components using Next.js 15, 
+TypeScript, Tailwind CSS and shadcn/ui.
+
+Color palette:
+- Background primary: #0A0F1E
+- Background surface: #162032
+- Border: #1E3A5F
+- Primary blue: #3B82F6
+- Blue light: #60A5FA
+- Blue lighter: #93C5FD
+- Muted: #64748B
+- Success: #22C55E
+- Warning: #F59E0B
+- Danger: #EF4444
+
+Components needed:
+
+1. HamburgerButton — icon button (size="icon" variant="ghost") 
+   that toggles sidebar open/close on tablet/mobile.
+
+2. LogoButton — displays the N logo mark + "NEXTBASE" text, 
+   acts as home link.
+
+3. NavItem — sidebar navigation item with icon + label, 
+   variant="ghost", active state highlighted with #3B82F6.
+
+4. ExpandSidebarButton — arrow icon button (size="icon") 
+   to collapse/expand sidebar on desktop.
+
+5. RequestServiceButton — primary CTA button (variant="default") 
+   with background #3B82F6, full width inside sidebar.
+
+6. AvatarButton — circular avatar button (size="icon") 
+   showing user initials or profile image.
+
+7. NotificationButton — icon button (size="icon" variant="ghost") 
+   with bell icon, shows badge counter.
+
+8. MessagesButton — icon button (size="icon" variant="ghost") 
+   with chat icon.
+
+9. SettingsButton — icon button (size="icon" variant="ghost") 
+   with settings icon.
+
+10. LogoutButton — icon button (size="icon" variant="ghost") 
+    with logout icon, triggers sign out action.
+
+11. DashboardCard — clickable card component with hover effect, 
+    background #162032, border #1E3A5F, border-radius 12px. 
+    Shows title, description and status badge.

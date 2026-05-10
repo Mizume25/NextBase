@@ -1,0 +1,32 @@
+NEXTBASE — Button List
+======================
+
+NAVIGATION / SIDEBAR
+---------------------
+- Hamburger menu (open/close sidebar)
+- Logo / Home button
+- Nav items (sidebar icons)
+- Expand sidebar button (arrow >)
+
+MAIN ACTIONS
+------------
+- Request Service (primary CTA)
+- Profile / Avatar button
+
+SIDEBAR FOOTER ICONS
+--------------------
+- Notifications
+- Messages / Tickets
+- Settings
+- Logout
+
+DASHBOARD CARDS
+---------------
+- Card (clickable → view detail)
+
+VARIANTS (shadcn/ui)
+--------------------
+- variant="default"   → Request Service
+- variant="ghost"     → sidebar nav items
+- variant="outline"   → secondary actions
+- size="icon"         → icon buttons (hamburger, avatar, footer)

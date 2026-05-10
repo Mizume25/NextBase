@@ -1,0 +1,46 @@
+Make the Customer Dashboard responsive following these breakpoints:
+
+DESKTOP (lg: 1024px+) — current design, keep as is:
+- Fixed sidebar 240px wide on the left, always visible
+- Top navbar with search bar + notification icons + user avatar
+- Main content with welcome header + action buttons
+- Recent Expedients table
+- Upcoming Appointments panel on the right
+- Documents row (3 cards)
+- Asset Allocation chart at the bottom
+- Request Service button fixed at sidebar bottom
+
+TABLET (md: 768px - 1023px):
+- Hide fixed sidebar
+- Top navbar: show hamburger menu (left) + NEXTBASE logo 
+  (center) + avatar (right). Remove search bar.
+- Sidebar becomes a slide-in drawer from the left 
+  (use shadcn/ui Sheet component)
+- Main content goes full width
+- Welcome header + action buttons stack vertically
+- Recent Expedients table: hide AMOUNT and ACTION columns, 
+  keep RECORD ID, ENTITY and STATUS
+- Upcoming Appointments moves below Recent Expedients 
+  (full width)
+- Documents row: 2 columns grid instead of 3
+- Asset Allocation chart: full width
+
+MOBILE (sm: below 768px):
+- Same top navbar as tablet
+- Same drawer sidebar as tablet
+- Welcome header: smaller font size
+- Action buttons: stack vertically, full width
+- Recent Expedients table: show only ENTITY and STATUS columns. 
+  Make each row tappable to view detail.
+- Upcoming Appointments: single column cards, full width
+- Documents row: single column, full width
+- Asset Allocation chart: full width, reduce height to 150px
+- Request Service button: fixed at bottom of screen, full width
+
+GENERAL RULES:
+- Keep the dark theme (#0A0F1E background, #162032 surfaces)
+- Keep #3B82F6 as primary blue for active states and CTAs
+- Use Tailwind CSS utility classes only
+- Use shadcn/ui Sheet for the mobile/tablet sidebar drawer
+- No inline styles
+- Maintain the same visual hierarchy and spacing proportions

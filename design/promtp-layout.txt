@@ -1,0 +1,50 @@
+Create the Home page layout for a financial advisory web app 
+called NextBase using Next.js 15, TypeScript and Tailwind CSS.
+
+Follow this responsive behavior:
+- Desktop (lg): fixed sidebar on the left + main content area 
+  on the right with a 4-column card grid.
+- Tablet (md): top navbar with hamburger menu that opens a 
+  sliding sidebar drawer + 2-column card grid.
+- Mobile (sm): same top navbar + sidebar drawer + 
+  single column card layout.
+
+Color palette:
+- Page background: #0A0F1E
+- Sidebar background: #0A0F1E
+- Sidebar border: #1E3A5F
+- Surface/cards: #162032
+- Primary action: #3B82F6
+- Text primary: white
+- Text muted: #64748B
+
+Desktop sidebar (lg — fixed, visible always):
+- Width: 240px
+- Logo at top (N mark + NEXTBASE)
+- RequestService button below logo (full width, #3B82F6)
+- Nav items list in the middle (ghost variant, icon + label)
+- Footer with 4 icon buttons: notifications, messages, 
+  settings, logout
+- Bottom: avatar + user name + email
+
+Tablet/Mobile navbar (md and below — top bar):
+- Height: 56px, background #0A0F1E, border-bottom #1E3A5F
+- Left: HamburgerButton to open sidebar drawer
+- Center: N logo mark
+- Right: AvatarButton
+- Sidebar opens as a drawer overlay from the left
+
+Main content area:
+- Padding: 24px
+- Header: page title "Home" + RequestService button (top right)
+- Card grid:
+  lg: grid-cols-4
+  md: grid-cols-2
+  sm: grid-cols-1
+- Each card: DashboardCard component, background #162032, 
+  border #1E3A5F, border-radius 12px, padding 20px
+
+Use Tailwind utility classes only. 
+No inline styles. 
+Use shadcn/ui Button and Sheet components for the sidebar drawer.
+Export the page as default from page.tsx.
