@@ -3,14 +3,14 @@
  * @fileoverview Archivo que mancomuna una serie de interfaces y tipados para frontend
  * @author Gabriel Nivicela
  */
-
+import { LucideIcon } from "lucide-react"
 /**@module @/components/core/Home/sidebar/NavItems */
 /** @description Layout de items para el sidebar */
 
-export interface NavItem {
-    icon:string,
+export interface Item {
+    icon:LucideIcon,
     label:string,
     active: boolean,
-    ruta:string
+    modify: () => void
 }
 
