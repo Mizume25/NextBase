@@ -1,0 +1,11 @@
+Para NextBase como asesoría financiera, estas APIs encajan perfectamente con tu BBDD:
+Datos financieros / mercados:
+
+Alpha Vantage — gratuita, stocks, forex, crypto
+Frankfurter — gratuita, tipos de cambio EUR
+CoinGecko — gratuita, precios crypto
+
+Noticias financieras:
+
+NewsAPI — noticias por categoría, plan gratuito
+Financial Modeling Prep — noticias financieras

@@ -11,6 +11,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        // shadcn/ui
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -51,6 +52,19 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+
+        // Stitch colors ← aquí dentro
+        surface: "#031427",
+        "surface-container": "#102034",
+        "surface-container-low": "#0b1c30",
+        "surface-container-high": "#1b2b3f",
+        "surface-container-lowest": "#000f21",
+        "on-surface": "#d3e4fe",
+        "on-surface-variant": "#c2c6d6",
+        "outline-variant": "#424754",
+        "on-primary": "#002e6a",
+        "secondary-container": "#2f4a70",
+        error: "#ffb4ab",
       },
       borderRadius: {
         lg: "var(--radius)",

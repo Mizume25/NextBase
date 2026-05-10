@@ -1,10 +1,13 @@
 "use client";
-
+/**
+ * @fileoverview Componente para poder tener un SideBar Dinamico
+ * 
+ */
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, LayoutDashboard, Wallet, BarChart3, Handshake, FileText, LogOut, X } from "lucide-react";
 import Link from "next/link";
-
+import LogoApp from "./LogoApp";
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", active: true },
   { icon: Wallet, label: "Portfolio" },
@@ -12,15 +15,15 @@ const navItems = [
   { icon: Handshake, label: "Advisory" },
   { icon: FileText, label: "Reports" },
 ];
-
+/** @return SideBar */
 export function Sidebar() {
   const NavLinks = () => (
     <>
       <div className="px-6 mb-12 flex items-center gap-3">
-        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center font-black text-on-primary">NB</div>
+       <LogoApp className="w-16 h-16"/>
         <div>
           <h1 className="text-lg font-black text-primary leading-tight">NEXTBASE</h1>
-          <p className="text-xs text-on-surface-variant">Financial Advisory</p>
+          <p className="text-xs text-on-surface-variant">Agenete Financiero</p>
         </div>
       </div>
       <nav className="flex-1 space-y-1 px-2">
