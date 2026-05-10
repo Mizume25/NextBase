@@ -17,14 +17,14 @@ export function Activity() {
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="bg-surface-container-low border-b border-outline-variant">
+            <tr className="bg-surface-container-low border-b border-outline-variant" id="headerInfo">
               <th className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">Record ID</th>
               <th className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">Entity</th>
               <th className="hidden md:table-cell px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">Amount</th>
               <th className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-outline-variant/30">
+          <tbody className="divide-y divide-outline-variant/30" id="bodyInfo">
             {data.map((item) => (
               <tr key={item.id} className="hover:bg-surface-container-high/40 transition-colors">
                 <td className="px-6 py-4 text-sm font-medium">{item.id}</td>

@@ -1,3 +1,8 @@
+/**
+ * 
+ * @returns Componente Inicial
+ * 
+ */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
 
@@ -12,12 +17,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 }
 
-// app/dashboard/page.tsx
+/** app/dashboard/page.tsx */ 
 import { Activity } from "@/components/core/Activity";
 import { Search, Bell, Mail, Settings, Download, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function DashboardPage() {
+export async function DashboardPage() {
+
+
+    
+
+
   return (
     <div className="flex flex-col flex-1">
       {/* Header */}
