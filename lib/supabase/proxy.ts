@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Archivo Diseñado para ofrecer un control en la navegacion web
+ * @module lib/supabase/proxy.ts
+ * 
+ */
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";

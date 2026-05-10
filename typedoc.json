@@ -1,0 +1,11 @@
+{
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "tsconfig": "./tsconfig.json",
+  "readme": "README.md",
+  "name": "NextBase",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeExternals": true
+}

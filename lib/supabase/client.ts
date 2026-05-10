@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Crea una entidad cliente
+ * @module lib/supabase/client.ts
+ */
+
 import { createBrowserClient } from "@supabase/ssr";
 
 export function createClient() {

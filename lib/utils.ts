@@ -1,6 +1,11 @@
+/**
+ * @fileoverview Funciones utilitarias para la fusión de clases CSS y validación de variables de entorno.
+ * @module lib/utils.ts
+ * 
+ */
+
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
