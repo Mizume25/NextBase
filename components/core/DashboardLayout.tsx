@@ -21,7 +21,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 import { Activity } from "@/components/core/Activity";
 import { Search, Bell, Mail, Settings, Download, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 export async function DashboardPage() {
 
 

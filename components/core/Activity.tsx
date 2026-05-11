@@ -1,5 +1,26 @@
 import { Badge } from "@/components/ui/badge";
-import { Eye, Edit2 } from "lucide-react";
+import { Customer, Invoice, Record, Ticket, Document } from "@/types/definitions"
+import { 
+  renderCustomerRows, 
+  renderRecordRows, 
+  renderInvoiceRows, 
+  renderTicketRows, 
+  renderDocumentRows, 
+  renderHead } from '@/components/core/Home/action';
+import { useState } from "react";
+
+/** @type Tipado Enum para poder dinamizar contenido */
+type Section = 'customers' | 'records' | 'invoices' | 'tickets' | 'documents';
+
+/** Objecto funciones que podamos iterar */
+const renderers = {
+  customers:  (data: Customer[])  => renderCustomerRows(data),
+  records:    (data: Record[])    => renderRecordRows(data),
+  invoices:   (data: Invoice[])   => renderInvoiceRows(data),
+  tickets:    (data: Ticket[])    => renderTicketRows(data),
+  documents:  (data: Document[])  => renderDocumentRows(data),
+  headers:    (item: object)      => renderHead(item),
+};
 
 const data = [
   { id: "EXP-2024-001", entity: "Vanguard Tech Fund", amount: "$1,240,000", status: "Success" },
@@ -8,6 +29,12 @@ const data = [
 ];
 
 export function Activity() {
+
+  /** @enum Usestate que itera el enum  */
+  const [section, setsection] = useState<Section>('customers');
+
+   
+
   return (
     <div className="col-span-12 lg:col-span-8 bg-surface-container rounded-xl border border-outline-variant overflow-hidden">
       <div className="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-high/50">

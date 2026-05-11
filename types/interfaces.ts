@@ -5,6 +5,7 @@
  */
 import { LucideIcon } from "lucide-react"
 import { JSX } from "react"
+import { Customer, Invoice, Record } from "./definitions";
 /**@module @/components/core/Home/sidebar/NavItems */
 /** @description Layout de items para el sidebar */
 export interface Item {
@@ -16,16 +17,18 @@ export interface Item {
 
 
 /**
- * @return Interfaz para iterar campos y mapearlos
+ * @author Gabriel Nivicela
+ * @return JSX.Element
+ * @description Interfaz de SideBar que permite mancomunar funciones
  */
-interface Field {
-    customers: () => JSX.Element,
+
+interface Fileable {
+    customs: () => JSX.Element,
     records: () => JSX.Element,
     invoices: () => JSX.Element,
+    tickets: () => JSX.Element,
     documents: () => JSX.Element,
-    tickets: () => JSX.Element
 }
-
 
 
 
