@@ -6,9 +6,7 @@
 
 import { Customer, Invoice, Record, Ticket, Document } from "@/types/definitions"
 import { JSX } from "react"
-/** Declaramos los displays  */
-const thead = document?.getElementById('headerInfo') as HTMLTableSectionElement
-const tbody = document?.getElementById('bodyInfo') as HTMLTableSectionElement
+
 
 
 /** Funciones de Renderizado de Tabla */

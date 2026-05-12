@@ -1,3 +1,4 @@
+"use client"
 import { Badge } from "@/components/ui/badge";
 import { Customer, Invoice, Record, Ticket, Document } from "@/types/definitions"
 import { 
@@ -7,10 +8,8 @@ import {
   renderTicketRows, 
   renderDocumentRows, 
   renderHead } from '@/components/core/Home/action';
-import { useState } from "react";
-
-/** @type Tipado Enum para poder dinamizar contenido */
-type Section = 'customers' | 'records' | 'invoices' | 'tickets' | 'documents';
+import { useNavStore } from "@/store/useNavStore";
+import { Section } from "@/store/useNavStore";
 
 /** Objecto funciones que podamos iterar */
 const renderers = {
@@ -29,11 +28,8 @@ const data = [
 ];
 
 export function Activity() {
-
-  /** @enum Usestate que itera el enum  */
-  const [section, setsection] = useState<Section>('customers');
-
-   
+  /** @enum Use-state que itera el enum  */
+  const section = useNavStore((s) => s.section)
 
   return (
     <div className="col-span-12 lg:col-span-8 bg-surface-container rounded-xl border border-outline-variant overflow-hidden">

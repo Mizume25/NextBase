@@ -4,15 +4,15 @@
  * @author Gabriel Nivicela
  */
 import { LucideIcon } from "lucide-react"
-import { JSX } from "react"
-import { Customer, Invoice, Record } from "./definitions";
+import React, { JSX } from "react"
+import { Section } from "@/store/useNavStore"
 /**@module @/components/core/Home/sidebar/NavItems */
 /** @description Layout de items para el sidebar */
 export interface Item {
     icon:LucideIcon,
     label:string,
     active: boolean,
-    modify: () => void
+    modify: (a:Section) => void
 }
 
 

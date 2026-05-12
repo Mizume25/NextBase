@@ -5,6 +5,14 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
+import { Customer } from "@/types/definitions";
+import { getCustomers } from "@/lib/database/customers";
+import { createClient } from "@/lib/supabase/server";
+import { Activity } from "@/components/core/Activity";
+import { Search, Bell, Mail, Settings, Download, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { User } from "@supabase/supabase-js";
+import { connection } from "next/server";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,14 +25,34 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 }
 
-/** app/dashboard/page.tsx */ 
-import { Activity } from "@/components/core/Activity";
-import { Search, Bell, Mail, Settings, Download, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+
+
 export async function DashboardPage() {
 
+  
+  /** Señalamos que es dinamica */
+  await connection();
+  
+   /** 
+     * @returns User
+     * Crea un usuario actual */
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser();
+  
+  /** Recibimos los objetos para renderizar */
+    const list : Customer[] = await getCustomers(user?.id);
+    console.log(list);
 
     
+  /** 
+   * @param string 
+   * Funcion que recoge valor del hijo
+   * */    
+
+  const handleSection = (data:string ): void =>{
+      
+  }
 
 
   return (
@@ -59,7 +87,7 @@ export async function DashboardPage() {
       <div className="p-6 lg:p-8 space-y-8 flex-1">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div>
-            <h2 className="text-4xl lg:text-5xl font-bold">Welcome back, Alexander</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold">Bienvenido de nuevo { user?.email }</h2>
             <p className="text-lg text-on-surface-variant mt-2">Your portfolio grew by 4.2% this quarter.</p>
           </div>
           <div className="flex gap-3">

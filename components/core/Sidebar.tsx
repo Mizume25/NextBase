@@ -11,15 +11,13 @@ import Link from "next/link";
 import LogoApp from "./LogoApp";
 import NavItems from "./Home/sidebar/NavItems";
 import SidebarFooter from "./Home/sidebar/SidebarFooter";
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: Wallet, label: "Portfolio" },
-  { icon: BarChart3, label: "Market Data" },
-  { icon: Handshake, label: "Advisory" },
-  { icon: FileText, label: "Reports" },
-];
+
 /** @return SideBar */
 export function Sidebar() {
+
+
+
+  
 
   const NavLinks = () => (
     <>
