@@ -14,132 +14,158 @@ export type Database = {
   }
   public: {
     Tables: {
-      Customers: {
+      customers: {
         Row: {
           address: string
           created_at: string
           id: string
-          name: string
+          manager_id: string
           nif: string
-          telefono: string
+          profile_id: string
           updated_at: string
-          user_id: string
         }
         Insert: {
           address: string
           created_at?: string
           id?: string
-          name: string
+          manager_id: string
           nif: string
-          telefono: string
+          profile_id: string
           updated_at?: string
-          user_id: string
         }
         Update: {
           address?: string
           created_at?: string
           id?: string
-          name?: string
+          manager_id?: string
           nif?: string
-          telefono?: string
+          profile_id?: string
           updated_at?: string
-          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_customers_manager_id"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_customers_profile_id"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      Documents: {
+      documents: {
         Row: {
           created_at: string
           id: string
           name: string
-          record_id: string
+          record_id: string | null
           type_mime: string
           updated_at: string
           url: string
-          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
-          record_id: string
+          record_id?: string | null
           type_mime: string
           updated_at?: string
           url: string
-          user_id: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          record_id?: string
+          record_id?: string | null
           type_mime?: string
           updated_at?: string
           url?: string
-          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_Documents_record_id_Records_id"
+            foreignKeyName: "fk_documents_record_id"
             columns: ["record_id"]
-            isOneToOne: false
-            referencedRelation: "Records"
+            isOneToOne: true
+            referencedRelation: "records"
             referencedColumns: ["id"]
           },
         ]
       }
-      Invoices: {
+      invoices: {
         Row: {
           amount: number
           created_at: string
-          customer_id: string
           emission: string
           id: string
-          record_id: string
+          record_id: string | null
           status: Database["public"]["Enums"]["invoice_status"]
           updated_at: string
-          user_id: string
         }
         Insert: {
           amount: number
           created_at?: string
-          customer_id: string
           emission: string
           id?: string
-          record_id: string
-          status?: Database["public"]["Enums"]["invoice_status"]
+          record_id?: string | null
+          status: Database["public"]["Enums"]["invoice_status"]
           updated_at?: string
-          user_id: string
         }
         Update: {
           amount?: number
           created_at?: string
-          customer_id?: string
           emission?: string
           id?: string
-          record_id?: string
+          record_id?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           updated_at?: string
-          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_Invoices_customer_id_Customers_id"
-            columns: ["customer_id"]
-            isOneToOne: false
-            referencedRelation: "Customers"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_Invoices_record_id_Records_id"
+            foreignKeyName: "fk_invoices_record_id"
             columns: ["record_id"]
-            isOneToOne: false
-            referencedRelation: "Records"
+            isOneToOne: true
+            referencedRelation: "records"
             referencedColumns: ["id"]
           },
         ]
       }
-      Records: {
+      profile: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          phone: string
+          rol: Database["public"]["Enums"]["rol_type"]
+          surname: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          name: string
+          phone: string
+          rol: Database["public"]["Enums"]["rol_type"]
+          surname: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string
+          rol?: Database["public"]["Enums"]["rol_type"]
+          surname?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      records: {
         Row: {
           created_at: string
           customer_id: string
@@ -148,17 +174,15 @@ export type Database = {
           status: Database["public"]["Enums"]["record_status"]
           type: Database["public"]["Enums"]["record_type"]
           updated_at: string
-          user_id: string
         }
         Insert: {
           created_at?: string
           customer_id: string
           description: string
           id?: string
-          status?: Database["public"]["Enums"]["record_status"]
+          status: Database["public"]["Enums"]["record_status"]
           type: Database["public"]["Enums"]["record_type"]
           updated_at?: string
-          user_id: string
         }
         Update: {
           created_at?: string
@@ -168,62 +192,58 @@ export type Database = {
           status?: Database["public"]["Enums"]["record_status"]
           type?: Database["public"]["Enums"]["record_type"]
           updated_at?: string
-          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_Records_customer_id_Customers_id"
+            foreignKeyName: "fk_records_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "Customers"
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
         ]
       }
-      Tickets: {
+      tickets: {
         Row: {
           created_at: string
           customer_id: string
           id: string
-          record_id: string
+          record_id: string | null
           resolve: boolean
           type: Database["public"]["Enums"]["ticket_type"]
           updated_at: string
-          user_id: string
         }
         Insert: {
           created_at?: string
           customer_id: string
           id?: string
-          record_id: string
+          record_id?: string | null
           resolve?: boolean
           type: Database["public"]["Enums"]["ticket_type"]
           updated_at?: string
-          user_id: string
         }
         Update: {
           created_at?: string
           customer_id?: string
           id?: string
-          record_id?: string
+          record_id?: string | null
           resolve?: boolean
           type?: Database["public"]["Enums"]["ticket_type"]
           updated_at?: string
-          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_Tickets_customer_id_Customers_id"
+            foreignKeyName: "fk_tickets_customer_id"
             columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "Customers"
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_Tickets_record_id_Records_id"
+            foreignKeyName: "fk_tickets_record_id"
             columns: ["record_id"]
             isOneToOne: false
-            referencedRelation: "Records"
+            referencedRelation: "records"
             referencedColumns: ["id"]
           },
         ]
@@ -242,6 +262,7 @@ export type Database = {
         | "free_consultation"
         | "financial_advice"
         | "administrative_advice"
+      rol_type: "customer" | "manager"
       ticket_type: "appointment" | "resolution"
     }
     CompositeTypes: {
@@ -377,6 +398,7 @@ export const Constants = {
         "financial_advice",
         "administrative_advice",
       ],
+      rol_type: ["customer", "manager"],
       ticket_type: ["appointment", "resolution"],
     },
   },

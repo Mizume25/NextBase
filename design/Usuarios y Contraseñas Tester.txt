@@ -1,0 +1,4 @@
+Usuarios y Contraseñas Tester
+carlos.garcia@nextbase.com     Pass: Tester123!
+maria.lopez@nextbase.com       Pass: Tester123!
+antonio.martinez@nextbase.com  Pass: Tester123!

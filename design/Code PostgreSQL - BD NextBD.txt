@@ -1,0 +1,104 @@
+-- Creación de Base de Datos de NextBase
+CREATE SCHEMA IF NOT EXISTS public;
+
+CREATE TYPE invoice_status AS ENUM ('pending', 'paid', 'overdue');
+CREATE TYPE record_status AS ENUM ('pending', 'in_process', 'completed', 'archived');
+CREATE TYPE record_type AS ENUM ('free_consultation', 'financial_advice', 'administrative_advice');
+CREATE TYPE rol_type AS ENUM ('customer', 'manager');
+CREATE TYPE ticket_type AS ENUM ('appointment', 'resolution');
+
+CREATE TABLE public.profile (
+    id         uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    name       text NOT NULL,
+    surname    text NOT NULL,
+    phone      text NOT NULL,
+    rol        rol_type NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE public.customers (
+    id         uuid NOT NULL DEFAULT gen_random_uuid(),
+    nif        text NOT NULL UNIQUE,
+    address    text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    profile_id uuid NOT NULL,
+    manager_id uuid NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX customers_index_nif ON public.customers (nif);
+
+CREATE TABLE public.records (
+    id          uuid NOT NULL DEFAULT gen_random_uuid(),
+    type        record_type NOT NULL,
+    status      record_status NOT NULL,
+    description text NOT NULL,
+    created_at  timestamptz NOT NULL DEFAULT now(),
+    updated_at  timestamptz NOT NULL DEFAULT now(),
+    customer_id uuid NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX records_index_status ON public.records (status);
+
+CREATE TABLE public.documents (
+    id         uuid NOT NULL DEFAULT gen_random_uuid(),
+    name       text NOT NULL,
+    url        text NOT NULL,
+    type_mime  text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    record_id  uuid UNIQUE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE public.invoices (
+    id         uuid NOT NULL DEFAULT gen_random_uuid(),
+    amount     numeric NOT NULL,
+    status     invoice_status NOT NULL,
+    emission   timestamptz NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    record_id  uuid UNIQUE,
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX invoices_index_status ON public.invoices (status);
+
+CREATE TABLE public.tickets (
+    id          uuid NOT NULL DEFAULT gen_random_uuid(),
+    type        ticket_type NOT NULL,
+    resolve     boolean NOT NULL DEFAULT false,
+    created_at  timestamptz NOT NULL DEFAULT now(),
+    updated_at  timestamptz NOT NULL DEFAULT now(),
+    record_id   uuid,
+    customer_id uuid NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE INDEX tickets_index_type ON public.tickets (type);
+
+-- Foreign keys
+ALTER TABLE public.customers ADD CONSTRAINT fk_customers_profile_id
+    FOREIGN KEY (profile_id) REFERENCES public.profile(id);
+
+ALTER TABLE public.customers ADD CONSTRAINT fk_customers_manager_id
+    FOREIGN KEY (manager_id) REFERENCES public.profile(id);
+
+ALTER TABLE public.records ADD CONSTRAINT fk_records_customer_id
+    FOREIGN KEY (customer_id) REFERENCES public.customers(id);
+
+ALTER TABLE public.tickets ADD CONSTRAINT fk_tickets_record_id
+    FOREIGN KEY (record_id) REFERENCES public.records(id);
+
+ALTER TABLE public.tickets ADD CONSTRAINT fk_tickets_customer_id
+    FOREIGN KEY (customer_id) REFERENCES public.customers(id);
+
+ALTER TABLE public.documents ADD CONSTRAINT fk_documents_record_id
+    FOREIGN KEY (record_id) REFERENCES public.records(id);
+
+ALTER TABLE public.invoices ADD CONSTRAINT fk_invoices_record_id
+    FOREIGN KEY (record_id) REFERENCES public.records(id);
