@@ -1,7 +1,7 @@
 /**
  * @author Gabriel Nivicela
  * @module /lib/database/customer.ts
- * @fileoverview Archivo para poder obtener objetos de la base de Datos
+ * @fileoverview Archivo para poder obtener objetos de la base de Datos Customer
  * @version 1.0.0
  * @since 2026-05
  */
@@ -48,15 +48,22 @@ import { createClient } from "../supabase/server";
  * const customers = await getCustomers(Id)
  * ```
  */
-export const getCustomers = async (user_id: string | undefined): Promise<Customer[]> => {
+export const getCustomers = async (manager_id: string | undefined): Promise<Customer[]> => {
     
     const supabase = await createClient();
 
     const { data, error } = await supabase
-        .from('Customers')
-        .select('*')
-        .eq('user_id', user_id);
-
+        .from('customers')
+        .select(`
+            *,
+            profile (
+                name,
+                surname,
+                phone,
+                rol
+            )
+        `)
+        .eq('manager_id', manager_id);
 
     if (error) {
         return [];
@@ -64,4 +71,7 @@ export const getCustomers = async (user_id: string | undefined): Promise<Custome
         return data;
     }
 }
+
+
+
 
