@@ -47,14 +47,14 @@ export type Database = {
             foreignKeyName: "fk_customers_manager_id"
             columns: ["manager_id"]
             isOneToOne: false
-            referencedRelation: "profile"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "fk_customers_profile_id"
             columns: ["profile_id"]
             isOneToOne: false
-            referencedRelation: "profile"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -135,7 +135,7 @@ export type Database = {
           },
         ]
       }
-      profile: {
+      profiles: {
         Row: {
           created_at: string
           id: string

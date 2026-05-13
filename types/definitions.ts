@@ -16,6 +16,6 @@ export type Record = Database["public"]["Tables"]["records"]["Row"];
 export type Invoice = Database["public"]["Tables"]["invoices"]["Row"];
 export type Document = Database["public"]["Tables"]["documents"]["Row"];
 export type Ticket = Database["public"]["Tables"]["tickets"]["Row"];
-export type Profile = Database["public"]["Tables"]["profile"]["Row"];
+export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 

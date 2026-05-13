@@ -10,7 +10,7 @@
  * @import Modelo de Customer
  * @import Create Client Server */
 
-import { Customer } from "@/types/definitions";
+import { Customer, Profile } from "@/types/definitions";
 import { createClient } from "../supabase/server";
 
 /**
@@ -49,23 +49,26 @@ import { createClient } from "../supabase/server";
  * ```
  */
 export const getCustomers = async (manager_id: string | undefined): Promise<Customer[]> => {
+
+
     
     const supabase = await createClient();
 
     const { data, error } = await supabase
-        .from('customers')
-        .select(`
-            *,
-            profile (
-                name,
-                surname,
-                phone,
-                rol
-            )
-        `)
-        .eq('manager_id', manager_id);
+    .from('customers')
+    .select(`
+        *,
+        profiles!profile_id (
+            name,
+            surname,
+            phone,
+            rol
+        )
+    `)
+    .eq('manager_id', manager_id);
 
     if (error) {
+        console.log("getCustomers error:", error)
         return [];
     } else {
         return data;

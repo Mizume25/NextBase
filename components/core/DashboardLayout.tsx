@@ -5,7 +5,7 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
-import { Customer } from "@/types/definitions";
+import { Customer, Profile } from "@/types/definitions";
 import { getCustomers } from "@/lib/database/customers";
 import { createClient } from "@/lib/supabase/server";
 import { Activity } from "@/components/core/Activity";
@@ -13,6 +13,8 @@ import { Search, Bell, Mail, Settings, Download, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { User } from "@supabase/supabase-js";
 import { connection } from "next/server";
+import { getProfile } from "@/lib/database/profile";
+import { redirect } from "next/navigation";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -39,9 +41,17 @@ export async function DashboardPage() {
      * Crea un usuario actual */
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser();
+
+    /** Si no exite retrocedemos al login */
+    if (!user) redirect('/login');
+
+  /** Obtenemos el perfil del usuario actual */
+    const profile : Profile | null = await getProfile(user);
+
+    console.log(profile?.name)
   
   /** Recibimos los objetos para renderizar */
-    const list : Customer[] = await getCustomers(user?.id);
+    const list : Customer[] = await getCustomers(profile?.id);
     console.log(list);
 
     
@@ -54,6 +64,7 @@ export async function DashboardPage() {
       
   }
 
+ 
 
   return (
     <div className="flex flex-col flex-1">
@@ -87,7 +98,7 @@ export async function DashboardPage() {
       <div className="p-6 lg:p-8 space-y-8 flex-1">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div>
-            <h2 className="text-4xl lg:text-5xl font-bold">Bienvenido de nuevo { user?.email }</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold">Bienvenido de nuevo { profile?.name }</h2>
             <p className="text-lg text-on-surface-variant mt-2">Your portfolio grew by 4.2% this quarter.</p>
           </div>
           <div className="flex gap-3">
