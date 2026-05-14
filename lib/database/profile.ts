@@ -46,3 +46,4 @@ export const getProfile = async(auth_user : User ) : Promise<Profile | null> => 
         return data;
     }
 }
+

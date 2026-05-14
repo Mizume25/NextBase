@@ -1,6 +1,6 @@
 "use client"
 import { Badge } from "@/components/ui/badge";
-import { Customer, Invoice, Record, Ticket, Document } from "@/types/definitions"
+import { Customer, Invoice, Record, Ticket, Document, CustomerWithProfile } from "@/types/definitions"
 import { 
   renderCustomerRows, 
   renderRecordRows, 
@@ -9,11 +9,12 @@ import {
   renderDocumentRows, 
   renderHead } from '@/components/core/Home/action';
 import { useNavStore } from "@/store/useNavStore";
-import { Section } from "@/store/useNavStore";
+import { ActivityProps } from "@/types/interfaces";
+
 
 /** Objecto funciones que podamos iterar */
 const renderers = {
-  customers:  (data: Customer[])  => renderCustomerRows(data),
+  customers:  (data: CustomerWithProfile[])  => renderCustomerRows(data),
   records:    (data: Record[])    => renderRecordRows(data),
   invoices:   (data: Invoice[])   => renderInvoiceRows(data),
   tickets:    (data: Ticket[])    => renderTicketRows(data),
@@ -27,7 +28,7 @@ const data = [
   { id: "EXP-2024-012", entity: "Crypto Arbitrage LP", amount: "$420,000", status: "Success" },
 ];
 
-export function Activity() {
+export function Activity({ customers } : ActivityProps) {
   /** @enum Use-state que itera el enum  */
   const section = useNavStore((s) => s.section)
 

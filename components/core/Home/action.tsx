@@ -4,7 +4,8 @@
  * @since 10-2026
  */
 
-import { Customer, Invoice, Record, Ticket, Document } from "@/types/definitions"
+import { getProfile } from "@/lib/database/profile";
+import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile } from "@/types/definitions"
 import { JSX } from "react"
 
 
@@ -24,16 +25,20 @@ export const renderHead = <T extends object>(item: T): JSX.Element[] =>
 
 /**
  *  @return Render Customers
- *  @param customers  
+ *  @param CustomerWithProfile  
  *  @description Renderizado contenido de clientes
  */
-export const renderCustomerRows = (customers: Customer[]): JSX.Element[] => {
-  return customers.map((p) => (
+export const renderCustomerRows = (data: CustomerWithProfile[]): JSX.Element[]=> {
+
+
+  return data.map(({profiles , ...p}) => (
+
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium">{p.name}</td>
-      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.nif}</td>
-      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.telefono}</td>
-      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.address}</td>
+      <td className="px-6 py-4 text-sm font-medium">{profiles.name}</td>
+      <td className="px-6 py-4 text-sm font-medium">{profiles.surname}</td>
+      <td className="px-6 py-4 text-sm font-medium">{profiles.phone}</td>
+      <td className="px-6 py-4 text-sm font-medium">{p.nif}</td>
+      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.address}</td>
     </tr>
   ));
 };

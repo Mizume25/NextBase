@@ -5,16 +5,19 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
-import { Customer, Profile } from "@/types/definitions";
-import { getCustomers } from "@/lib/database/customers";
+import { Profile , CustomerWithProfile} from "@/types/definitions";
+import { getCustomersWithProfile  } from "@/lib/database/customers";
 import { createClient } from "@/lib/supabase/server";
 import { Activity } from "@/components/core/Activity";
-import { Search, Bell, Mail, Settings, Download, Plus } from "lucide-react";
+import { Search, Settings, Download, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { User } from "@supabase/supabase-js";
 import { connection } from "next/server";
 import { getProfile } from "@/lib/database/profile";
 import { redirect } from "next/navigation";
+import ProfileIcon from "./ProfileIcon";
+import { ActivityProps } from "@/types/interfaces";
+
+
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,7 +35,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 export async function DashboardPage() {
 
-  
+ 
   /** Señalamos que es dinamica */
   await connection();
   
@@ -48,24 +51,23 @@ export async function DashboardPage() {
   /** Obtenemos el perfil del usuario actual */
     const profile : Profile | null = await getProfile(user);
 
+     /** Si no exite retrocedemos al login */
+    if (!profile) redirect('/login');
+
     console.log(profile?.name)
   
   /** Recibimos los objetos para renderizar */
-    const list : Customer[] = await getCustomers(profile?.id);
-    console.log(list);
+  const customerList : CustomerWithProfile[] = await getCustomersWithProfile (profile?.id);
 
-    
+
+
   /** 
-   * @param string 
-   * Funcion que recoge valor del hijo
-   * */    
-
-  const handleSection = (data:string ): void =>{
-      
+   * @type
+   * Objeto Construible - Que renderizaremos en activity */
+  const infoRender : ActivityProps = {
+    customers: customerList
   }
-
- 
-
+  
   return (
     <div className="flex flex-col flex-1">
       {/* Header */}
@@ -77,21 +79,10 @@ export async function DashboardPage() {
             placeholder="Search portfolio..." 
           />
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex gap-2">
-            <Button variant="ghost" size="icon" className="rounded-full relative">
-              <Bell size={20} /><span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full"><Mail size={20} /></Button>
-          </div>
-          <div className="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
-            <div className="text-right hidden md:block">
-              <p className="text-sm font-bold leading-none">Alexander Pierce</p>
-              <p className="text-[10px] text-on-surface-variant uppercase tracking-wider">Premium Partner</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant" />
-          </div>
-        </div>
+        {/*  Componente de Perfil */}       
+
+       <ProfileIcon profile={profile}/>
+
       </header>
 
       {/* Content */}
@@ -99,7 +90,7 @@ export async function DashboardPage() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div>
             <h2 className="text-4xl lg:text-5xl font-bold">Bienvenido de nuevo { profile?.name }</h2>
-            <p className="text-lg text-on-surface-variant mt-2">Your portfolio grew by 4.2% this quarter.</p>
+            <p className="text-lg text-on-surface-variant mt-2">Accede a tus pendientes en esta tabla</p>
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="bg-surface-container-high border-outline-variant gap-2">
@@ -112,7 +103,7 @@ export async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-12 gap-6">
-          <Activity />
+          <Activity customers={customerList}/>
           
           {/* Upcoming Card */}
           <div className="col-span-12 lg:col-span-4 bg-surface-container rounded-xl border border-outline-variant p-6 flex flex-col">

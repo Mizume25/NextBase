@@ -19,3 +19,12 @@ export type Ticket = Database["public"]["Tables"]["tickets"]["Row"];
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 
+/**
+ * @type Customer & Profile
+ * Modificacion de tipos
+ */
+export type CustomerWithProfile = Customer & {
+  profiles: Profile
+}
+
+

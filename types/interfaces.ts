@@ -6,6 +6,7 @@
 import { LucideIcon } from "lucide-react"
 import React, { JSX } from "react"
 import { Section } from "@/store/useNavStore"
+import { Profile, Customer, CustomerWithProfile } from "./definitions"
 /**@module @/components/core/Home/sidebar/NavItems */
 /** @description Layout de items para el sidebar */
 export interface Item {
@@ -16,19 +17,11 @@ export interface Item {
 }
 
 
-/**
- * @author Gabriel Nivicela
- * @return JSX.Element
- * @description Interfaz de SideBar que permite mancomunar funciones
- */
-
-interface Fileable {
-    customs: () => JSX.Element,
-    records: () => JSX.Element,
-    invoices: () => JSX.Element,
-    tickets: () => JSX.Element,
-    documents: () => JSX.Element,
+export type ActivityProps = {
+    customers: CustomerWithProfile[]
 }
+
+
 
 
 

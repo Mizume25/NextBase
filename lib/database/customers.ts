@@ -10,8 +10,9 @@
  * @import Modelo de Customer
  * @import Create Client Server */
 
-import { Customer, Profile } from "@/types/definitions";
+import { Customer, Profile , CustomerWithProfile} from "@/types/definitions";
 import { createClient } from "../supabase/server";
+
 
 /**
  * @return Lista de Clientes
@@ -41,40 +42,48 @@ import { createClient } from "../supabase/server";
 
 
 /**
- * @returns Lista de Clientes relacionados
+ * @returns Lista de Clientes relacionados + Perfiles
  * @param UUID
  * @example
  * ``` TS
- * const customers = await getCustomers(Id)
+ * const customers = await getCustomersWithProfile(Id)
  * ```
  */
-export const getCustomers = async (manager_id: string | undefined): Promise<Customer[]> => {
 
+export const getCustomersWithProfile = async (manager_id: string | undefined): Promise<CustomerWithProfile[]> => {
+  const supabase = await createClient()
+  
+  const { data, error } = await supabase
+    .from('customers')
+    .select('*')
+    .eq('manager_id', manager_id)
 
-    
+  if (error) return []
+
+  const customers = await Promise.all(
+    data.map(async (customer) => ({
+      ...customer,
+      profile: await getCustomerProfile(customer.profile_id)
+    }))
+  )
+
+  return customers
+}
+
+const getCustomerProfile  = async(profile_id: string |  undefined): Promise<Profile | null> => {
+
     const supabase = await createClient();
 
     const { data, error } = await supabase
-    .from('customers')
-    .select(`
-        *,
-        profiles!profile_id (
-            name,
-            surname,
-            phone,
-            rol
-        )
-    `)
-    .eq('manager_id', manager_id);
+    .from("profiles")
+    .select("*")
+    .eq("id", profile_id)
+    .single();
 
-    if (error) {
-        console.log("getCustomers error:", error)
-        return [];
-    } else {
-        return data;
-    }
+    if(error) return null;
+
+    return data;
 }
-
 
 
 
