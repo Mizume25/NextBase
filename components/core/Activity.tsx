@@ -31,7 +31,7 @@ const renderers = {
 };
 
 
-
+/*  dwdwidwdwdwdwdwddwdwdwddwdwdwd */
 
 /** Objeto que instancia la ejecuccion */
 const renderSection = (section: Section, props : ActivityProps) => {
