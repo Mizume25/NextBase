@@ -11,7 +11,7 @@ import {
 import { useNavStore } from "@/store/useNavStore";
 import { ActivityProps } from "@/types/interfaces";
 import { Section } from "@/store/useNavStore";
-
+/* Import Section */
 /**  
  * @type General*/
 type SectionData =
