@@ -15,8 +15,9 @@ import { JSX } from "react"
  * @returns Thead
  * @description Renderizado contenido de thead
  */
+const excludedKeys = ['created_at', 'updated_at', 'id']
 export const renderHead = <T extends object>(item: T): JSX.Element[] =>
-  Object.keys(item).map((key) => (
+  Object.keys(item).filter(key => !excludedKeys.includes(key) && !key.endsWith('_id')).map((key) => (
     <th key={key} className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">
       {key}
     </th>
