@@ -58,7 +58,7 @@ export async function DashboardPage() {
 
   /** Recibimos los objetos para renderizar */
   const customerList: CustomerWithProfile[] = await getCustomersWithProfile(profile?.id);
-
+  console.log(customerList);
 
 
   /** 

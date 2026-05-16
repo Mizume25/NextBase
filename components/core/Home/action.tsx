@@ -7,7 +7,7 @@
 import { getProfile } from "@/lib/database/profile";
 import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile } from "@/types/definitions"
 import { JSX } from "react"
-
+import { User } from "lucide-react"
 
 
 /** Funciones de Renderizado de Tabla */
@@ -21,7 +21,7 @@ export const renderHead = <T extends object>(item: T): JSX.Element[] =>
     <th key={key} className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">
       {key}
     </th>
-));
+  ));
 
 
 /**
@@ -29,15 +29,19 @@ export const renderHead = <T extends object>(item: T): JSX.Element[] =>
  *  @param CustomerWithProfile  
  *  @description Renderizado contenido de clientes
  */
-export const renderCustomerRows = (data: CustomerWithProfile[]): JSX.Element[]=> {
+export const renderCustomerRows = (data: CustomerWithProfile[]): JSX.Element[] => {
 
 
-  return data.map(({profiles , ...p}) => (
+  return data.map((p) => (
 
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium">{profiles.name}</td>
-      <td className="px-6 py-4 text-sm font-medium">{profiles.surname}</td>
-      <td className="px-6 py-4 text-sm font-medium">{profiles.phone}</td>
+
+      <td className="px-6 py-4 text-sm font-medium"><span className="flex items-center gap-2">
+        <User size={18} />
+        {p.name}
+      </span></td>
+      <td className="px-6 py-4 text-sm font-medium">{p.surname}</td>
+      <td className="px-6 py-4 text-sm font-medium">{p.phone}</td>
       <td className="px-6 py-4 text-sm font-medium">{p.nif}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.address}</td>
     </tr>
@@ -48,9 +52,9 @@ export const renderCustomerRows = (data: CustomerWithProfile[]): JSX.Element[]=>
  * @return Render Records
  * @param records
  */
-export const renderRecordRows = (records : Record[]):JSX.Element[] =>{
+export const renderRecordRows = (records: Record[]): JSX.Element[] => {
   return records.map((p) => (
-      <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
+    <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
       <td className="px-6 py-4 text-sm font-medium">{p.type}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.description}</td>
       <td className="hidden md:table-cell px-6 py-4 text-sm">{p.status}</td>
@@ -64,9 +68,9 @@ export const renderRecordRows = (records : Record[]):JSX.Element[] =>{
  * @return Render Invoices
  * @param invoices
  */
-export const renderInvoiceRows = (invoices : Invoice[]):JSX.Element[] =>{
+export const renderInvoiceRows = (invoices: Invoice[]): JSX.Element[] => {
   return invoices.map((p) => (
-      <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
+    <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
       <td className="px-6 py-4 text-sm font-medium">{p.amount}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.emission}</td>
       <td className="hidden md:table-cell px-6 py-4 text-sm">{p.status}</td>
@@ -79,9 +83,9 @@ export const renderInvoiceRows = (invoices : Invoice[]):JSX.Element[] =>{
  * @return Render Ticket
  * @param ticket
  */
-export const renderTicketRows = (tickets : Ticket[]):JSX.Element[] =>{
+export const renderTicketRows = (tickets: Ticket[]): JSX.Element[] => {
   return tickets.map((p) => (
-      <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
+    <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
       <td className="px-6 py-4 text-sm font-medium">{p.resolve}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.type}</td>
     </tr>
@@ -93,12 +97,12 @@ export const renderTicketRows = (tickets : Ticket[]):JSX.Element[] =>{
  * @return Render Ticket
  * @param ticket
  */
-export const renderDocumentRows = (documents: Document[]):JSX.Element[] =>{
+export const renderDocumentRows = (documents: Document[]): JSX.Element[] => {
   return documents.map((p) => (
-      <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
+    <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
       <td className="px-6 py-4 text-sm font-medium">{p.name}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.url}</td>
-       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.type_mime}</td>
+      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.type_mime}</td>
     </tr>
   ))
 }

@@ -24,7 +24,7 @@ const handleLink = (a :Section) :void => {
   /** @type Coleccion  Objetos */
 const items : Item[]= [
     {
-      icon:UserCheck,
+      icon: UserCheck,
       label:"customers",
       active: true,
       modify: handleLink,

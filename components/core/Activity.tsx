@@ -64,9 +64,11 @@ export function Activity({ props } : {props:ActivityProps}) {
   const section = useNavStore((s) => s.section)
 
 
-  const { data } = getSectionData(section, props)
+  const { data } = getSectionData(section, props);
+  
+  /*
   const { profile, ...rest } = data[0] as any
-  const flatItem = { ...rest, ...profile }
+  const flatItem = { ...rest, ...profile } */
 
 
   return (
@@ -78,7 +80,7 @@ export function Activity({ props } : {props:ActivityProps}) {
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="bg-surface-container-low border-b border-outline-variant" id="headerInfo">
+            <tr className="bg-surface-container-low border-b border-outline-variant text-center" id="headerInfo">
               {/*
               <th className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">Record ID</th>
               <th className="px-6 py-3 text-xs font-bold text-on-surface-variant uppercase">Entity</th>
@@ -87,11 +89,15 @@ export function Activity({ props } : {props:ActivityProps}) {
               */}
 
               {/* Renderizacion de Contenido de Ths*/}
-              {renderHead(flatItem)}
+              {renderHead(data[0])}
+              
 
             </tr>
           </thead>
-          <tbody className="divide-y divide-outline-variant/30" id="bodyInfo">
+          <tbody className="divide-y divide-outline-variant/30 text-center" id="bodyInfo">
+
+
+          {renderSection(section, props)}
                 {/*
               <tr key={item.id} className="hover:bg-surface-container-high/40 transition-colors">
                 <td className="px-6 py-4 text-sm font-medium">{item.id}</td>

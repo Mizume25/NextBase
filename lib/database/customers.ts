@@ -10,7 +10,7 @@
  * @import Modelo de Customer
  * @import Create Client Server */
 
-import { Customer, Profile , CustomerWithProfile} from "@/types/definitions";
+import { Customer, Profile, CustomerWithProfile } from "@/types/definitions";
 import { createClient } from "../supabase/server";
 
 
@@ -51,36 +51,53 @@ import { createClient } from "../supabase/server";
  */
 
 export const getCustomersWithProfile = async (manager_id: string | undefined): Promise<CustomerWithProfile[]> => {
-  const supabase = await createClient()
-  
-  const { data, error } = await supabase
-    .from('customers')
-    .select('*')
-    .eq('manager_id', manager_id)
+    const supabase = await createClient()
 
-  if (error) return []
+    const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('manager_id', manager_id)
 
-  const customers = await Promise.all(
-    data.map(async (customer) => ({
-      ...customer,
-      profile: await getCustomerProfile(customer.profile_id)
-    }))
-  )
+    if (error) {
+        console.log(error)
+        return []
+    }
 
-  return customers
+    const customers = await Promise.all(
+        data.map(async (customer) => {
+            const profile = await getCustomerProfile(customer.profile_id)
+            if (!profile) return null
+
+            const object: CustomerWithProfile = {
+                id: customer.id,
+                name: profile.name,
+                surname: profile.surname,
+                phone: profile.phone,
+                nif: customer.nif,
+                address: customer.address,
+                profile_id: customer.profile_id,
+                manager_id: customer.manager_id,
+                
+            }
+
+            return object
+        })
+    )
+
+    return customers.filter((c): c is CustomerWithProfile => c !== null)
 }
 
-const getCustomerProfile  = async(profile_id: string |  undefined): Promise<Profile | null> => {
+
+const getCustomerProfile = async (profile_id: string | undefined): Promise<Profile | null> => {
 
     const supabase = await createClient();
 
     const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", profile_id)
-    .single();
-
-    if(error) return null;
+        .from("profiles")  
+        .select('*')
+        .eq("id", profile_id)
+        .single();
+    if (error) return null;
 
     return data;
 }
