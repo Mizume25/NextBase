@@ -26,13 +26,18 @@ export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 
 /**
- * @type Customer & Profile
+ * @type Tipados genericos para cada derivado
  * Modificacion de tipos
  */
+type WithProfile = Omit<Profile, "updated_at" | "created_at" | "id" | "rol">
+type WithName = Pick<Profile, "name" | "surname">
+type WithoutMetadata<T> = Omit<T, "updated_at" | "created_at">
 
-export type CustomerWithProfile = 
-  Omit<Customer, "updated_at" | "created_at"> &
-  Omit<Profile, "updated_at" | "created_at" | "id" | "rol"> 
+/** @type Customers */
+export type CustomerWithProfile = WithoutMetadata<Customer> & WithProfile
+
+/** @type Record */
+export type RecordsWithProfile = WithoutMetadata<Record> & WithName
 
 
 /*  

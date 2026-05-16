@@ -57,6 +57,7 @@ export const getCustomersWithProfile = async (manager_id: string | undefined): P
         .from('customers')
         .select('*')
         .eq('manager_id', manager_id)
+        .order('created_at', { ascending: true })
 
     if (error) {
         console.log(error)
@@ -88,7 +89,7 @@ export const getCustomersWithProfile = async (manager_id: string | undefined): P
 }
 
 
-const getCustomerProfile = async (profile_id: string | undefined): Promise<Profile | null> => {
+export const getCustomerProfile = async (profile_id: string | undefined): Promise<Profile | null> => {
 
     const supabase = await createClient();
 
@@ -96,6 +97,8 @@ const getCustomerProfile = async (profile_id: string | undefined): Promise<Profi
         .from("profiles")  
         .select('*')
         .eq("id", profile_id)
+        .order('created_at', { ascending: true })
+        
         .single();
     if (error) return null;
 

@@ -5,10 +5,10 @@
  */
 
 import { getProfile } from "@/lib/database/profile";
-import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile } from "@/types/definitions"
+import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile } from "@/types/definitions"
 import { JSX } from "react"
 import { User } from "lucide-react"
-
+import { Badge } from "@/components/ui/badge";
 
 /** Funciones de Renderizado de Tabla */
 /**
@@ -52,16 +52,30 @@ export const renderCustomerRows = (data: CustomerWithProfile[]): JSX.Element[] =
  * @return Render Records
  * @param records
  */
-export const renderRecordRows = (records: Record[]): JSX.Element[] => {
+export const renderRecordRows = (records: RecordsWithProfile[]): JSX.Element[] => {
   return records.map((p) => (
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium">{p.type}</td>
-      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.description}</td>
-      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.status}</td>
-      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.type}</td>
+      <td className="px-6 py-4 text-sm font-medium"><span className="flex items-center gap-2">
+        <User size={18} />
+        {p.name}
+      </span></td>
+      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.surname}</td>
+      
+      <td className="hidden md:table-cell px-6 py-4 text-sm capitalize">{p.type.replace("_", " ")}</td>
+      <td className="hidden md:table-cell px-6 py-4 text-sm">
+        <Badge className={
+          p.status === "completed"
+            ? "bg-primary/10 text-primary rounded-full"
+            : "bg-error/10 text-error rounded-full"
+        }>
+          {p.status}
+        </Badge>
+      </td>
+      <td className="hidden md:table-cell px-6 py-4 text-sm text-left" >{p.description}</td>
     </tr>
   ))
 }
+
 
 /*-----------------------------------------------------------------------------------*/
 /**

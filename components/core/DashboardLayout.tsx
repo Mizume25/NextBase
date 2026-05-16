@@ -5,7 +5,7 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
-import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket } from "@/types/definitions";
+import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile } from "@/types/definitions";
 import { getCustomersWithProfile } from "@/lib/database/customers";
 import { createClient } from "@/lib/supabase/server";
 import { Activity } from "@/components/core/Activity";
@@ -16,8 +16,19 @@ import { getProfile } from "@/lib/database/profile";
 import { redirect } from "next/navigation";
 import ProfileIcon from "./ProfileIcon";
 import { ActivityProps } from "@/types/interfaces";
+import { getRecordWithProfile } from "@/lib/database/record";
 
 
+/**
+ * @param Arrays
+ */
+
+const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[]): Promise<void> => {
+    await Promise.all(customers.map(async (customer) => {
+        const reg = await getRecordWithProfile(customer);
+        records.push(...reg)
+    }))
+}
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -35,7 +46,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 export async function DashboardPage() {
 
-
   /** Señalamos que es dinamica */
   await connection();
 
@@ -44,6 +54,7 @@ export async function DashboardPage() {
     * Crea un usuario actual */
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser();
+
 
   /** Si no exite retrocedemos al login */
   if (!user) redirect('/login');
@@ -58,15 +69,20 @@ export async function DashboardPage() {
 
   /** Recibimos los objetos para renderizar */
   const customerList: CustomerWithProfile[] = await getCustomersWithProfile(profile?.id);
+
   console.log(customerList);
 
+  let recordList : RecordsWithProfile [] = [];
 
+  await filleableArr(recordList, customerList);
+
+  console.log(recordList);
   /** 
    * @type
    * Objeto Construible - Que renderizaremos en activity */
   const infoRender: ActivityProps = {
     customers: customerList,
-    records: [],
+    records: recordList,
     invoices: [],
     documents: [],
     tickets: [],
