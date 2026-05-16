@@ -30,14 +30,20 @@ export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
  * Modificacion de tipos
  */
 type WithProfile = Omit<Profile, "updated_at" | "created_at" | "id" | "rol">
-type WithName = Pick<Profile, "name" | "surname">
+type WithNameAndSurName = Pick<Profile, "name" | "surname">
 type WithoutMetadata<T> = Omit<T, "updated_at" | "created_at">
 
 /** @type Customers */
 export type CustomerWithProfile = WithoutMetadata<Customer> & WithProfile
 
 /** @type Record */
-export type RecordsWithProfile = WithoutMetadata<Record> & WithName
+export type RecordsWithProfile = WithoutMetadata<Record> & WithNameAndSurName
+
+/** @type Invoice */
+export type InvoiceWithRecord = WithoutMetadata<Invoice> & {
+  register: string
+  fullname : string 
+}
 
 
 /*  

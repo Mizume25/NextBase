@@ -1,6 +1,6 @@
 /**
  * @author Gabriel Nivicela
- * @module /lib/database/customer.ts
+ * @module /lib/database/records.ts
  * @fileoverview Archivo para poder obtener objetos de la base de Datos Record
  * @version 1.0.0
  * @since 2026-05
@@ -34,10 +34,10 @@ import { getCustomerProfile } from "./customers";
  * ```
  */
 
-export const getRecordWithProfile = async (customer : CustomerWithProfile | undefined): Promise<RecordsWithProfile[]> => {
+export const getRecordWithProfile = async (customer: CustomerWithProfile | undefined): Promise<RecordsWithProfile[]> => {
     const supabase = await createClient()
 
-    if(!customer) return [];
+    if (!customer) return [];
 
     const { data, error } = await supabase
         .from('records')
@@ -50,27 +50,15 @@ export const getRecordWithProfile = async (customer : CustomerWithProfile | unde
         return []
     }
 
-    const register = await Promise.all(
-        data.map(async (reg) => {
-            const profile = await getCustomerProfile(customer.profile_id);
-            
-            if (!profile) return null;
-
-            const object: RecordsWithProfile = {
-                id: reg.id,
-                name: profile.name,
-                surname: profile.surname,
-                type: reg.type,
-                status: reg.status,
-                description: reg.description,
-                customer_id: reg.customer_id
-            }
-
-            return object
-        })
-    )
-
-    return register.filter((r): r is RecordsWithProfile => r !== null);
+    return data.map((reg) => ({
+        id:          reg.id,
+        name:        customer.name,
+        surname:     customer.surname,
+        type:        reg.type,
+        status:      reg.status,
+        description: reg.description,
+        customer_id: reg.customer_id
+    }))
 }
 
 

@@ -5,7 +5,7 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
-import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile } from "@/types/definitions";
+import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile, InvoiceWithRecord } from "@/types/definitions";
 import { getCustomersWithProfile } from "@/lib/database/customers";
 import { createClient } from "@/lib/supabase/server";
 import { Activity } from "@/components/core/Activity";
@@ -16,18 +16,33 @@ import { getProfile } from "@/lib/database/profile";
 import { redirect } from "next/navigation";
 import ProfileIcon from "./ProfileIcon";
 import { ActivityProps } from "@/types/interfaces";
-import { getRecordWithProfile } from "@/lib/database/record";
+import { getRecordWithProfile } from "@/lib/database/records";
+import { getInvoiceWithRecord } from "@/lib/database/invoices";
 
 
 /**
  * @param Arrays
  */
 
-const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[]): Promise<void> => {
-    await Promise.all(customers.map(async (customer) => {
+const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[], invoices:InvoiceWithRecord[]): Promise<void> => {
+    
+  /**@function Fileable Array */
+  await Promise.all(customers.map(async (customer) => {
         const reg = await getRecordWithProfile(customer);
         records.push(...reg)
-    }))
+  }))
+
+  /**@function Fileable Object */
+  await Promise.all(records.map(async(record) => {
+
+      let inv : InvoiceWithRecord | null = await getInvoiceWithRecord(record);
+      
+      if(!inv) return null;
+
+      invoices.push(inv);
+  }))
+
+
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -73,17 +88,19 @@ export async function DashboardPage() {
   console.log(customerList);
 
   let recordList : RecordsWithProfile [] = [];
+  let invoiceList : InvoiceWithRecord [] = [];
 
-  await filleableArr(recordList, customerList);
+  await filleableArr(recordList, customerList, invoiceList);
 
   console.log(recordList);
+  console.log(invoiceList);
   /** 
    * @type
    * Objeto Construible - Que renderizaremos en activity */
   const infoRender: ActivityProps = {
     customers: customerList,
     records: recordList,
-    invoices: [],
+    invoices: invoiceList,
     documents: [],
     tickets: [],
   }

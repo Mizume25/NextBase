@@ -5,7 +5,7 @@
  */
 
 import { getProfile } from "@/lib/database/profile";
-import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile } from "@/types/definitions"
+import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord } from "@/types/definitions"
 import { JSX } from "react"
 import { User } from "lucide-react"
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +41,7 @@ export const renderCustomerRows = (data: CustomerWithProfile[]): JSX.Element[] =
         {p.name}
       </span></td>
       <td className="px-6 py-4 text-sm font-medium">{p.surname}</td>
-      <td className="px-6 py-4 text-sm font-medium">{p.phone}</td>
+      <td className="px-6 py-4 text-sm font-medium">+34 {p.phone}</td>
       <td className="px-6 py-4 text-sm font-medium">{p.nif}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.address}</td>
     </tr>
@@ -82,12 +82,22 @@ export const renderRecordRows = (records: RecordsWithProfile[]): JSX.Element[] =
  * @return Render Invoices
  * @param invoices
  */
-export const renderInvoiceRows = (invoices: Invoice[]): JSX.Element[] => {
+export const renderInvoiceRows = (invoices: InvoiceWithRecord[]): JSX.Element[] => {
   return invoices.map((p) => (
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium">{p.amount}</td>
-      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.emission}</td>
-      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.status}</td>
+      <td className="px-6 py-4 text-sm font-medium">{p.register}</td>
+      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.fullname}</td>
+      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.amount} $</td>
+      <td className="hidden md:table-cell px-6 py-4 text-sm">
+        <Badge className={
+          p.status === "paid"
+            ? "bg-primary/10 text-primary rounded-full"
+            : "bg-error/10 text-error rounded-full"
+        }>
+          {p.status}
+        </Badge>
+      </td>
+      <td className="hidden md:table-cell px-6 py-4 text-sm">{p.emission}</td>
     </tr>
   ))
 }
