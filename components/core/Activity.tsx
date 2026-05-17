@@ -1,13 +1,14 @@
 "use client"
 import { Badge } from "@/components/ui/badge";
-import { Customer, Invoice, Record, Ticket, Document, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord } from "@/types/definitions"
-import { 
-  renderCustomerRows, 
-  renderRecordRows, 
-  renderInvoiceRows, 
-  renderTicketRows, 
-  renderDocumentRows, 
-  renderHead } from '@/components/core/Home/action';
+import { CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord, TicketWithCustomer } from "@/types/definitions"
+import {
+  renderCustomerRows,
+  renderRecordRows,
+  renderInvoiceRows,
+  renderTicketRows,
+  renderDocumentRows,
+  renderHead
+} from '@/components/core/Home/action';
 import { useNavStore } from "@/store/useNavStore";
 import { ActivityProps } from "@/types/interfaces";
 import { Section } from "@/store/useNavStore";
@@ -15,43 +16,43 @@ import { Section } from "@/store/useNavStore";
 /**  
  * @type General*/
 type SectionData =
-  | { section: 'customers';  data: CustomerWithProfile[] }
-  | { section: 'records';    data: RecordsWithProfile[] }
-  | { section: 'invoices';   data: InvoiceWithRecord[] }
-  | { section: 'tickets';    data: Ticket[] }
-  | { section: 'documents';  data: DocumentWhitRecord[] }
+  | { section: 'customers'; data: CustomerWithProfile[] }
+  | { section: 'records'; data: RecordsWithProfile[] }
+  | { section: 'invoices'; data: InvoiceWithRecord[] }
+  | { section: 'tickets'; data: TicketWithCustomer[] }
+  | { section: 'documents'; data: DocumentWhitRecord[] }
 
 /** Objecto funciones que podamos iterar */
 const renderers = {
-  customers:  (data: CustomerWithProfile[])  => renderCustomerRows(data),
-  records:    (data: RecordsWithProfile[])    => renderRecordRows(data),
-  invoices:   (data: InvoiceWithRecord[])   => renderInvoiceRows(data),
-  tickets:    (data: Ticket[])    => renderTicketRows(data),
-  documents:  (data: DocumentWhitRecord[])  => renderDocumentRows(data),
+  customers: (data: CustomerWithProfile[]) => renderCustomerRows(data),
+  records: (data: RecordsWithProfile[]) => renderRecordRows(data),
+  invoices: (data: InvoiceWithRecord[]) => renderInvoiceRows(data),
+  tickets: (data: TicketWithCustomer[]) => renderTicketRows(data),
+  documents: (data: DocumentWhitRecord[]) => renderDocumentRows(data),
 };
 
 
 
 
 /** Objeto que instancia la ejecuccion */
-const renderSection = (section: Section, props : ActivityProps) => {
-  switch(section) {
-    case 'customers':  return renderers.customers(props.customers)
-    case 'records':    return renderers.records(props.records)
-    case 'invoices':   return renderers.invoices(props.invoices)
-    case 'tickets':    return renderers.tickets(props.tickets)
-    case 'documents':  return renderers.documents(props.documents)
+const renderSection = (section: Section, props: ActivityProps) => {
+  switch (section) {
+    case 'customers': return renderers.customers(props.customers)
+    case 'records': return renderers.records(props.records)
+    case 'invoices': return renderers.invoices(props.invoices)
+    case 'tickets': return renderers.tickets(props.tickets)
+    case 'documents': return renderers.documents(props.documents)
   }
 }
 
 /* Objeto que itera types */
 const getSectionData = (section: Section, props: ActivityProps): SectionData => {
-  switch(section) {
-    case 'customers':  return { section: 'customers',  data: props.customers }
-    case 'records':    return { section: 'records',    data: props.records }
-    case 'invoices':   return { section: 'invoices',   data: props.invoices }
-    case 'tickets':    return { section: 'tickets',    data: props.tickets }
-    case 'documents':  return { section: 'documents',  data: props.documents }
+  switch (section) {
+    case 'customers': return { section: 'customers', data: props.customers }
+    case 'records': return { section: 'records', data: props.records }
+    case 'invoices': return { section: 'invoices', data: props.invoices }
+    case 'tickets': return { section: 'tickets', data: props.tickets }
+    case 'documents': return { section: 'documents', data: props.documents }
   }
 }
 
@@ -59,13 +60,13 @@ const getSectionData = (section: Section, props: ActivityProps): SectionData => 
 
 
 
-export function Activity({ props } : {props:ActivityProps}) {
+export function Activity({ props }: { props: ActivityProps }) {
   /** @enum Use-state que itera el enum  */
   const section = useNavStore((s) => s.section)
 
 
   const { data } = getSectionData(section, props);
-  
+
   /*
   const { profile, ...rest } = data[0] as any
   const flatItem = { ...rest, ...profile } */
@@ -89,16 +90,19 @@ export function Activity({ props } : {props:ActivityProps}) {
               */}
 
               {/* Renderizacion de Contenido de Ths*/}
-              {renderHead(data[0])}
-              
+              {data.length > 0 ? renderHead(data[0]) : null}
+
 
             </tr>
           </thead>
           <tbody className="divide-y divide-outline-variant/30 text-center" id="bodyInfo">
 
 
-          {renderSection(section, props)}
-                {/*
+            {data.length > 0
+              ? renderSection(section, props)
+              : <tr><td colSpan={5} className="px-6 py-4 text-sm text-center text-on-surface-variant">No hay tickets pendientes</td></tr>
+            }
+            {/*
               <tr key={item.id} className="hover:bg-surface-container-high/40 transition-colors">
                 <td className="px-6 py-4 text-sm font-medium">{item.id}</td>
                 <td className="px-6 py-4 text-sm text-on-surface-variant">{item.entity}</td>
@@ -111,7 +115,7 @@ export function Activity({ props } : {props:ActivityProps}) {
               </tr>
 
                 */}
-           
+
           </tbody>
         </table>
       </div>

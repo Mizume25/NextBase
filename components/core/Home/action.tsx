@@ -5,9 +5,9 @@
  */
 
 import { getProfile } from "@/lib/database/profile";
-import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord } from "@/types/definitions"
+import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord, TicketWithCustomer } from "@/types/definitions"
 import { JSX } from "react"
-import { User, Receipt, FileText, FolderOpen } from "lucide-react"
+import { User, Receipt, FileText, FolderOpen, AlertCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge";
 
 /** Funciones de Renderizado de Tabla */
@@ -112,11 +112,18 @@ export const renderInvoiceRows = (invoices: InvoiceWithRecord[]): JSX.Element[] 
  * @return Render Ticket
  * @param ticket
  */
-export const renderTicketRows = (tickets: Ticket[]): JSX.Element[] => {
+export const renderTicketRows = (tickets: TicketWithCustomer[]): JSX.Element[] => {
   return tickets.map((p) => (
-    <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium">{p.resolve}</td>
-      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.type}</td>
+    <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors text-center">
+      <td className="px-6 py-4 text-sm font-medium">
+        <span className="flex items-center gap-2">
+          <AlertCircle size={18} className="text-yellow-400" />
+          {p.name}
+        </span>
+      </td>
+      <td className="px-6 py-4 text-sm font-medium">{p.surname}</td>
+      <td className="px-6 py-4 text-sm font-medium">{p.type}</td>
+      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.resolve ? 'Sí' : 'No'}</td>
     </tr>
   ))
 }

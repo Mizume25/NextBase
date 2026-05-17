@@ -1,7 +1,7 @@
 /**
  * @author Gabriel Nivicela
  * @module /lib/database/records.ts
- * @fileoverview Archivo para poder obtener objetos de la base de Datos Record
+ * @fileoverview Archivo para poder obtener objetos de la base de Datos Ticket
  * @version 1.0.0
  * @since 2026-05
  */
@@ -10,7 +10,7 @@
  * @import Modelo de Record
  * @import Create Client Server */
 
-import { RecordsWithProfile , CustomerWithProfile } from "@/types/definitions";
+import { TicketWithCustomer , CustomerWithProfile, Ticket } from "@/types/definitions";
 import { createClient } from "../supabase/server";
 
 /**
@@ -33,13 +33,13 @@ import { createClient } from "../supabase/server";
  * ```
  */
 
-export const getRecordWithProfile = async (customer: CustomerWithProfile | undefined): Promise<RecordsWithProfile[]> => {
+export const getTicketWhitCustomer = async (customer: CustomerWithProfile | undefined): Promise<TicketWithCustomer[]> => {
     const supabase = await createClient()
 
     if (!customer) return [];
 
     const { data, error } = await supabase
-        .from('records')
+        .from('tickets')
         .select('*')
         .eq('customer_id', customer.id)
         .order('created_at', { ascending: true })
@@ -49,14 +49,14 @@ export const getRecordWithProfile = async (customer: CustomerWithProfile | undef
         return []
     }
 
-    return data.map((reg) => ({
-        id:          reg.id,
-        name:        customer.name,
-        surname:     customer.surname,
-        type:        reg.type,
-        status:      reg.status,
-        description: reg.description,
-        customer_id: reg.customer_id
+    return data.map((tick) => ({
+        id: tick.id,
+        name: customer.name,
+        surname: customer.surname,
+        type: tick.type,
+        resolve: tick.type,
+        customer_id: tick.customer_id,
+        record_id : tick.record_id
     }))
 }
 

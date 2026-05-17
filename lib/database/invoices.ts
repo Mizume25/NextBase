@@ -10,9 +10,9 @@
  * @import Modelo de Record
  * @import Create Client Server */
 
-import { Record, Profile, RecordsWithProfile , CustomerWithProfile , InvoiceWithRecord} from "@/types/definitions";
+import { RecordsWithProfile , InvoiceWithRecord} from "@/types/definitions";
 import { createClient } from "../supabase/server";
-import { getCustomerProfile } from "./customers";
+
 
 /**
  * @return Lista de Records

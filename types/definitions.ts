@@ -49,6 +49,8 @@ export type DocumentWhitRecord = WithoutMetadata<Document> & {
   register: string
   fullname: string
 }
+/** @type Ticket */
+export type TicketWithCustomer = WithoutMetadata<Ticket> & WithName
 
 
 /*  

@@ -5,7 +5,7 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
-import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord } from "@/types/definitions";
+import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord, TicketWithCustomer } from "@/types/definitions";
 import { getCustomersWithProfile } from "@/lib/database/customers";
 import { createClient } from "@/lib/supabase/server";
 import { Activity } from "@/components/core/Activity";
@@ -19,17 +19,23 @@ import { ActivityProps } from "@/types/interfaces";
 import { getRecordWithProfile } from "@/lib/database/records";
 import { getInvoiceWithRecord } from "@/lib/database/invoices";
 import { getDocumentWhitRecord } from "@/lib/database/documents";
+import { getTicketWhitCustomer } from "@/lib/database/tickets";
+import WindowTicket from "./WindowTicket";
 
 /**
  * @param Arrays
  */
 
-const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[], invoices:InvoiceWithRecord[], documentList:DocumentWhitRecord []): Promise<void> => {
+const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[], invoices:InvoiceWithRecord[], documentList:DocumentWhitRecord [], tickets: TicketWithCustomer[]): Promise<void> => {
     
   /**@function Fileable Array */
   await Promise.all(customers.map(async (customer) => {
         const reg = await getRecordWithProfile(customer);
-        records.push(...reg)
+        const tick = await getTicketWhitCustomer(customer);
+        
+        records.push(...reg);
+
+        tickets.push(...tick);
   }))
 
   /**@function Fileable Object Invoice */
@@ -101,12 +107,22 @@ export async function DashboardPage() {
   let recordList : RecordsWithProfile [] = [];
   let invoiceList : InvoiceWithRecord [] = [];
   let documentList : DocumentWhitRecord [] = [];
+  let ticketList : TicketWithCustomer [] = [];
+  let pendingTicket : TicketWithCustomer [] = [];
+  let completTicket : TicketWithCustomer [] = [];
 
-  await filleableArr(recordList, customerList, invoiceList, documentList);
+
+  await filleableArr(recordList, customerList, invoiceList, documentList, ticketList);
 
   console.log(recordList);
   console.log(invoiceList);
   console.log(documentList);
+  console.log(ticketList);
+
+  pendingTicket = ticketList.filter((p) => !p.resolve);
+  completTicket = ticketList.filter((p) => p.resolve);
+
+ 
   /** 
    * @type
    * Objeto Construible - Que renderizaremos en activity */
@@ -115,7 +131,7 @@ export async function DashboardPage() {
     records: recordList,
     invoices: invoiceList,
     documents: documentList,
-    tickets: [],
+    tickets: pendingTicket,
   }
 
   return (
@@ -156,16 +172,9 @@ export async function DashboardPage() {
           <Activity props={infoRender} />
 
           {/* Upcoming Card */}
-          <div className="col-span-12 lg:col-span-4 bg-surface-container rounded-xl border border-outline-variant p-6 flex flex-col">
-            <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-6">Upcoming Appointments</h3>
-            <div className="space-y-4">
-              <div className="p-4 bg-surface-container-high rounded-lg border-l-4 border-primary">
-                <p className="font-bold">Portfolio Review</p>
-                <p className="text-sm text-on-surface-variant">10:00 AM • Sarah M.</p>
-              </div>
-            </div>
-            <Button variant="outline" className="mt-auto w-full border-outline-variant mt-6">View Calendar</Button>
-          </div>
+         <WindowTicket tickets={completTicket}/>
+
+
         </div>
       </div>
     </div>
