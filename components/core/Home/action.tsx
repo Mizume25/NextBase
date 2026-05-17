@@ -5,9 +5,9 @@
  */
 
 import { getProfile } from "@/lib/database/profile";
-import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord } from "@/types/definitions"
+import { Customer, Invoice, Record, Ticket, Document, Profile, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord } from "@/types/definitions"
 import { JSX } from "react"
-import { User } from "lucide-react"
+import { User, Receipt, FileText, FolderOpen } from "lucide-react"
 import { Badge } from "@/components/ui/badge";
 
 /** Funciones de Renderizado de Tabla */
@@ -56,11 +56,11 @@ export const renderRecordRows = (records: RecordsWithProfile[]): JSX.Element[] =
   return records.map((p) => (
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
       <td className="px-6 py-4 text-sm font-medium"><span className="flex items-center gap-2">
-        <User size={18} />
+        <FolderOpen size={18} />
         {p.name}
       </span></td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.surname}</td>
-      
+
       <td className="hidden md:table-cell px-6 py-4 text-sm capitalize">{p.type.replace("_", " ")}</td>
       <td className="hidden md:table-cell px-6 py-4 text-sm">
         <Badge className={
@@ -85,7 +85,12 @@ export const renderRecordRows = (records: RecordsWithProfile[]): JSX.Element[] =
 export const renderInvoiceRows = (invoices: InvoiceWithRecord[]): JSX.Element[] => {
   return invoices.map((p) => (
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium">{p.register}</td>
+      <td className="px-6 py-4 text-sm font-medium">
+        <span className="flex items-center gap-2">
+          <Receipt size={18} />
+          {p.register}
+        </span>
+      </td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.fullname}</td>
       <td className="hidden md:table-cell px-6 py-4 text-sm">{p.amount} $</td>
       <td className="hidden md:table-cell px-6 py-4 text-sm">
@@ -118,15 +123,23 @@ export const renderTicketRows = (tickets: Ticket[]): JSX.Element[] => {
 
 /*-----------------------------------------------------------------------------------*/
 /**
- * @return Render Ticket
- * @param ticket
+ * @return Render Document
+ * @param documents
  */
-export const renderDocumentRows = (documents: Document[]): JSX.Element[] => {
+export const renderDocumentRows = (documents: DocumentWhitRecord[]): JSX.Element[] => {
   return documents.map((p) => (
     <tr key={p.id} className="hover:bg-surface-container-high/40 transition-colors">
+
+      <td className="px-6 py-4 text-sm font-medium">
+        <span className="flex items-center gap-2">
+          <FileText size={18} />
+          {p.register}
+        </span>
+      </td>
+      <td className="px-6 py-4 text-sm font-medium">{p.fullname}</td>
       <td className="px-6 py-4 text-sm font-medium">{p.name}</td>
       <td className="px-6 py-4 text-sm text-on-surface-variant">{p.url}</td>
-      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.type_mime}</td>
+      <td className="px-6 py-4 text-sm text-on-surface-variant">{p.type_mime.split('/')[1].toUpperCase()}</td>
     </tr>
   ))
 }

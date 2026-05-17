@@ -1,6 +1,6 @@
 "use client"
 import { Badge } from "@/components/ui/badge";
-import { Customer, Invoice, Record, Ticket, Document, CustomerWithProfile, RecordsWithProfile } from "@/types/definitions"
+import { Customer, Invoice, Record, Ticket, Document, CustomerWithProfile, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord } from "@/types/definitions"
 import { 
   renderCustomerRows, 
   renderRecordRows, 
@@ -17,17 +17,17 @@ import { Section } from "@/store/useNavStore";
 type SectionData =
   | { section: 'customers';  data: CustomerWithProfile[] }
   | { section: 'records';    data: RecordsWithProfile[] }
-  | { section: 'invoices';   data: Invoice[] }
+  | { section: 'invoices';   data: InvoiceWithRecord[] }
   | { section: 'tickets';    data: Ticket[] }
-  | { section: 'documents';  data: Document[] }
+  | { section: 'documents';  data: DocumentWhitRecord[] }
 
 /** Objecto funciones que podamos iterar */
 const renderers = {
   customers:  (data: CustomerWithProfile[])  => renderCustomerRows(data),
   records:    (data: RecordsWithProfile[])    => renderRecordRows(data),
-  invoices:   (data: Invoice[])   => renderInvoiceRows(data),
+  invoices:   (data: InvoiceWithRecord[])   => renderInvoiceRows(data),
   tickets:    (data: Ticket[])    => renderTicketRows(data),
-  documents:  (data: Document[])  => renderDocumentRows(data),
+  documents:  (data: DocumentWhitRecord[])  => renderDocumentRows(data),
 };
 
 

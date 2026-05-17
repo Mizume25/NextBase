@@ -43,17 +43,17 @@ const items : Item[]= [
       modify: handleLink,
     },
     {
+      icon: Archive, 
+      label: "documents",
+      active:false,
+      modify: handleLink,
+    },
+    {
       icon: FileText, 
       label: "tickets",
       active:false,
       modify: handleLink,
     },
-    {
-      icon: Archive, 
-      label: "documents",
-      active:false,
-      modify: handleLink,
-    }
 
 ]
 

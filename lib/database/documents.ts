@@ -1,7 +1,7 @@
 /**
  * @author Gabriel Nivicela
- * @module /lib/database/invoices.ts
- * @fileoverview Archivo para poder obtener objetos de la base de Datos Invoice
+ * @module /lib/database/documents.ts
+ * @fileoverview Archivo para poder obtener objetos de la base de Datos Documents
  * @version 1.0.0
  * @since 2026-05
  */
@@ -10,7 +10,7 @@
  * @import Modelo de Record
  * @import Create Client Server */
 
-import { Record, Profile, RecordsWithProfile , CustomerWithProfile , InvoiceWithRecord} from "@/types/definitions";
+import { Record, Profile, RecordsWithProfile , CustomerWithProfile , InvoiceWithRecord, DocumentWhitRecord} from "@/types/definitions";
 import { createClient } from "../supabase/server";
 import { getCustomerProfile } from "./customers";
 
@@ -34,11 +34,11 @@ import { getCustomerProfile } from "./customers";
  * ```
  */
 
-export const getInvoiceWithRecord = async (record: RecordsWithProfile | undefined): Promise<InvoiceWithRecord | null> => {
+export const getDocumentWhitRecord = async (record: RecordsWithProfile | undefined): Promise<DocumentWhitRecord | null> => {
     const supabase = await createClient()
     if(!record) return null
     const { data, error } = await supabase
-        .from('invoices')
+        .from('documents')
         .select('*')
         .eq('record_id', record.id)
         .single()
@@ -49,9 +49,9 @@ export const getInvoiceWithRecord = async (record: RecordsWithProfile | undefine
         id:        data.id,
         register: `${record.name[0]}${record.surname[0]}-${data.id.slice(0, 4).toUpperCase()}`,
         fullname: `${record.name} ${record.surname}`,
-        amount:    data.amount,
-        status:    data.status,
-        emission:  new Date(data.emission).toLocaleDateString('es-ES'),
+        name: data.name,
+        url: data.url,
+        type_mime: data.type_mime,
         record_id: record.id
     }
 }

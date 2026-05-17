@@ -5,7 +5,7 @@
  */
 // app/dashboard/layout.tsx
 import { Sidebar } from "@/components/core/Sidebar";
-import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile, InvoiceWithRecord } from "@/types/definitions";
+import { Profile, CustomerWithProfile, Record, Invoice, Customer, Document, Ticket, RecordsWithProfile, InvoiceWithRecord, DocumentWhitRecord } from "@/types/definitions";
 import { getCustomersWithProfile } from "@/lib/database/customers";
 import { createClient } from "@/lib/supabase/server";
 import { Activity } from "@/components/core/Activity";
@@ -18,13 +18,13 @@ import ProfileIcon from "./ProfileIcon";
 import { ActivityProps } from "@/types/interfaces";
 import { getRecordWithProfile } from "@/lib/database/records";
 import { getInvoiceWithRecord } from "@/lib/database/invoices";
-
+import { getDocumentWhitRecord } from "@/lib/database/documents";
 
 /**
  * @param Arrays
  */
 
-const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[], invoices:InvoiceWithRecord[]): Promise<void> => {
+const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWithProfile[], invoices:InvoiceWithRecord[], documentList:DocumentWhitRecord []): Promise<void> => {
     
   /**@function Fileable Array */
   await Promise.all(customers.map(async (customer) => {
@@ -32,7 +32,7 @@ const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWi
         records.push(...reg)
   }))
 
-  /**@function Fileable Object */
+  /**@function Fileable Object Invoice */
   await Promise.all(records.map(async(record) => {
 
       let inv : InvoiceWithRecord | null = await getInvoiceWithRecord(record);
@@ -40,6 +40,16 @@ const filleableArr = async (records: RecordsWithProfile[], customers: CustomerWi
       if(!inv) return null;
 
       invoices.push(inv);
+  }))
+
+  /**@function Fileable Object Document*/
+  await Promise.all(records.map(async(record) => {
+
+      let doc : DocumentWhitRecord | null = await getDocumentWhitRecord(record);
+      
+      if(!doc) return null;
+
+      documentList.push(doc);
   }))
 
 
@@ -87,13 +97,16 @@ export async function DashboardPage() {
 
   console.log(customerList);
 
+  /** Inicializamos arrays */
   let recordList : RecordsWithProfile [] = [];
   let invoiceList : InvoiceWithRecord [] = [];
+  let documentList : DocumentWhitRecord [] = [];
 
-  await filleableArr(recordList, customerList, invoiceList);
+  await filleableArr(recordList, customerList, invoiceList, documentList);
 
   console.log(recordList);
   console.log(invoiceList);
+  console.log(documentList);
   /** 
    * @type
    * Objeto Construible - Que renderizaremos en activity */
@@ -101,7 +114,7 @@ export async function DashboardPage() {
     customers: customerList,
     records: recordList,
     invoices: invoiceList,
-    documents: [],
+    documents: documentList,
     tickets: [],
   }
 
